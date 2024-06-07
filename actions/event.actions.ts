@@ -9,7 +9,7 @@ import { handleError } from '@/lib/utils';
 
 export async function getOrganizationEvents(organizationId: string, pageSize: number, lastVisible: QueryDocumentSnapshot | null = null) {
   let app: any = await getApp();
-  if (!app) return [] as Event[];
+  if (!app) return JSON.stringify({ events:[] as Event[], lastVisible: null, error: null })
   const db = getFirestore(app);
   const eventsCollection = collection(db, 'events');
 
@@ -34,19 +34,120 @@ export async function getOrganizationEvents(organizationId: string, pageSize: nu
 
     const eventsSnapshot = await getDocs(eventsQuery);
 
-    const events = eventsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const events: Event[] = eventsSnapshot.docs.map(doc => {
+      const data = doc.data()
+      const event: Event = {
+        id: doc.id,
+        organizationId: data.organizationId,
+        name: data.name,
+        banner: data.banner,
+        category: data.category,
+        price: data.price,
+        isFree: data.isFree,
+        date: {
+          from: data.date.from,
+          to: data.date.to
+        },
+        time: {
+          hours: data.time.hours,
+          minutes: data.time.minutes,
+          period: data.time.period
+        },
+        venue: {
+          center: data.venue.center,
+          region: data.venue.region,
+          state: data.venue.state,
+          street: data.venue.street,
+          zoom: data.venue.zoom
+        },
+        description: data.description,
+        slug: data.slug,
+        links: {
+          website: data.links.website,
+          twitter: data.links.twitter,
+          instagram: data.links.instagram,
+          linkedin: data.links.linkedin,
+        },
+        isApproved: data.isApproved,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt
+      }
+     return event
+    });
+
+    console.log('There are events ', events)
 
     const newLastVisible = eventsSnapshot.docs.length > 0 ? eventsSnapshot.docs[eventsSnapshot.docs.length - 1] : null;
 
-    return { events, lastVisible: newLastVisible, error: null };
+    return JSON.stringify({ events, lastVisible: newLastVisible, error: null })
+
   } catch (e) {
-    handleError(e)
-    return [] as Event[];
+    // handleError(e)
+    return JSON.stringify({ events:[] as Event[], lastVisible: null, error: e })
+  }
+}
+ 
+export async function getEventById(eventId: string) {
+  let app: any = await getApp();
+  if (!app) return { events:[] as Event[], lastVisible: null, error: null }
+  const db = getFirestore(app);
+
+  try {
+    const eventDocRef = doc(db, 'events', eventId);
+    const eventDocSnap = await getDoc(eventDocRef);
+
+    if (eventDocSnap.exists()) {
+      const data = eventDocSnap.data();
+      const event: Event = {
+        id: eventDocSnap.id,
+        organizationId: data.organizationId,
+        name: data.name,
+        banner: data.banner,
+        category: data.category,
+        price: data.price,
+        isFree: data.isFree,
+        date: {
+          from: data.date.from,
+          to: data.date.to
+        },
+        time: {
+          hours: data.time.hours,
+          minutes: data.time.minutes,
+          period: data.time.period
+        },
+        venue: {
+          center: data.venue.center,
+          region: data.venue.region,
+          state: data.venue.state,
+          street: data.venue.street,
+          zoom: data.venue.zoom
+        },
+        description: data.description,
+        slug: data.slug,
+        links: {
+          website: data.links.website,
+          twitter: data.links.twitter,
+          instagram: data.links.instagram,
+          linkedin: data.links.linkedin,
+        },
+        isApproved: data.isApproved,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt
+      };
+
+      console.log('Event found: ', event);
+      return { event, error: null };
+    } else {
+      console.log('No such document!');
+      return { event: null, error: 'No such document' };
+    }
+  } catch (e) {
+    console.error('Error getting document: ', e);
+    return { event: null, error: e };
   }
 }
 
-
-export async function createEvent(path:string, event: Event) {
+export async function createEvent(event: Partial<Event>) {
   let app: any = await getApp();
   if (!app) return [] as Event[];
   const db = getFirestore(app);
@@ -59,7 +160,6 @@ export async function createEvent(path:string, event: Event) {
     const eventData = { ...event, updatedAt, createdAt };
     result = await addDoc(collection(db, 'events'), eventData);
     // return JSON.parse(JSON.stringify(result))
-    revalidatePath(path)
     return { success: true };
   } catch (e) {
     handleError(e)
@@ -67,7 +167,7 @@ export async function createEvent(path:string, event: Event) {
   }
 }
 
-export async function deleteEvent(path:string, eventId: string) {
+export async function deleteEvent(eventId: string) {
   let app: any = await getApp();
   if (!app) return [] as Event[];
 
@@ -76,7 +176,7 @@ export async function deleteEvent(path:string, eventId: string) {
 
   try {
     await deleteDoc(eventDocRef);
-    revalidatePath(path)
+    // revalidatePath(path)
     return { success: true };
   } catch (e) {
     handleError(e)
@@ -84,7 +184,7 @@ export async function deleteEvent(path:string, eventId: string) {
   }
 }
 
-export async function updateEvent(eventId: string, path: string, eventData: Partial<Event>) {
+export async function updateEvent(eventId: string, eventData: Partial<Event>) {
   let app: any = await getApp();
   if (!app) return [] as Event[];
 
@@ -102,7 +202,6 @@ export async function updateEvent(eventId: string, path: string, eventData: Part
     const newData = { ...eventData, updatedAt };
 
     await updateDoc(eventDocRef, newData);
-    revalidatePath(path)
     return { success: true };
   } catch (e) {
     handleError(e)

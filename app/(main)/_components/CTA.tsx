@@ -10,7 +10,7 @@ export const CTA = () => {
       className="mb-8"
     >
       
-      <div className="grid grid-cols-1 gap-4 gap-y-12 md:grid-cols-2 mt-12 md:pt-32 px-[2rem]">
+      <div className="grid grid-cols-1 gap-4 gap-y-12 md:grid-cols-2 mt-12 md:mt-20 px-[2rem]">
 
         <div className="md:px-[2rem] mt-12 mb-12 md:mb-0" >
           <h2 className="text-center md:text-left text-[1.75rem] font-medium mb-4">
@@ -21,7 +21,7 @@ export const CTA = () => {
           </p>
 
               <Link 
-                href='/create-event'  
+                 href="/organization"
                 className="flex justify-center md:justify-start"
                 >
                 <Button>

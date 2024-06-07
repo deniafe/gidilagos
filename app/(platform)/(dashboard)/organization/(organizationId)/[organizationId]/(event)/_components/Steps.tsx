@@ -29,10 +29,10 @@ function Steps({ currentStep }: StepsProps) {
                     ? 'text-green-600'
                     : currentStep === step.number
                     ? 'text-blue-600'
-                    : 'text-gray-500'
+                    : 'text-muted-foreground'
                 }`}
               >
-                <span className={`h-6 w-6 rounded bg-gray-50 text-center text-[10px]/6 font-bold ${currentStep >= step.number ? 'text-green-600' : 'text-gray-600'}`}>
+                <span className={`h-6 w-6 rounded bg-muted text-center text-[10px]/6 font-bold ${currentStep >= step.number ? 'text-green-600' : 'text-muted-foreground'}`}>
                   {step.number}
                 </span>
                 <span className={`${currentStep === step.number ? 'flex' : 'hidden'} sm:flex`}>{step.label}</span>

@@ -42,6 +42,7 @@ const OrganizationProvider: React.FC<OrganizationProviderProps> = ({ children })
     const getOrgs = async () => {
       const orgs = await getAllOrganizations();
       setOrganizations(orgs);
+      console.log('This is the organizations', orgs)
       setIsLoading(false);
     }
     getOrgs();

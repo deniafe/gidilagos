@@ -1,4 +1,4 @@
 export const siteConfig = {
-  name: 'Gidiopolis | Search for events in your city',
+  name: 'Gidiopolis',
   description: 'Search for events in your city'
 }

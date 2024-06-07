@@ -58,6 +58,31 @@ export async function getAllOrganizations(): Promise<Organization[]> {
   }
 }
 
+export async function getAdminOrganizations(): Promise<Organization[]> {
+  let app: any = await getApp();
+  if (!app) return [] as Organization[];
+
+  const db = getFirestore(app);
+
+  try {
+    const orgCollection = collection(db, 'organizations');
+    const orgQuery = query(orgCollection);
+    const orgSnapshot = await getDocs(orgQuery);
+
+    const organizations: Organization[] = [];
+    orgSnapshot.forEach((doc) => {
+      organizations.push({ id: doc.id, ...doc.data() } as Organization);
+    });
+
+    console.log('Trying to get the organizatiosn from the server')
+
+    return organizations;
+  } catch (error) {
+    handleError(error);
+    return [] as Organization[];
+  }
+}
+
 // export async function paginateOrganizations(pageSize: number, startAfterDocId?: string): Promise<{ organizations: Organization[], lastDocId?: string } | { error: string }> {
 //   let app: any = await getApp();
 //   if (!app) return { error: "Firebase app initialization failed." };

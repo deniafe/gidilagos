@@ -59,7 +59,7 @@ export const Sidebar = ({storageKey = 'gidi-sidebar-state'}: SidebarProps) => {
           <nav className="grid items-start px-2 text-sm lg:px-4">
           <Link
               href="/organization"
-              className="flex items-center font-bold gap-12 rounded-lg px-3 py-8 text-muted-foreground transition-all hover:text-primary"
+              className="flex items-center font-bold gap-6 rounded-lg px-3 py-8 text-muted-foreground transition-all hover:text-primary"
             >
               <Package2 />
               Organizations

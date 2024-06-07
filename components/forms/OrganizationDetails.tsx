@@ -2,8 +2,6 @@
 
 import { useForm } from 'react-hook-form'
 import React, { useEffect, useState } from 'react'
-import { NumberInput } from '@tremor/react'
-import { v4 } from 'uuid'
 import { useUser } from '@clerk/nextjs'
 
 import { useRouter } from 'next/navigation' 
@@ -30,7 +28,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -38,10 +35,11 @@ import {
 } from '../ui/form'
 import { toast } from "sonner"
 import * as z from 'zod'
-import FileUpload from '../global/file-upload'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { Loading } from '../global/Loading'
+import { Textarea } from '@/components/ui/textarea';
+import { ImageUploadComponent } from '@/components/global/media/ImageUploadComponent';
 import { createOrganization, deleteOrganization, updateOrganization } from '@/actions/organization.actions'
 import { Organization } from '@/lib/types'
 
@@ -61,8 +59,8 @@ const FormSchema = z.object({
   zipCode: z.string().min(4, { message: 'Zipcode name must be atleast 4 chars.' }),
   state: z.string().min(2, { message: 'State name must be atleast 2 chars.' }),
   logo: z.string().min(1, { message: 'Organization logo required.' }),
-  // website: z.string(),
-  // description: z.string(),
+  website: z.string().url(),
+  description: z.string().min(20, { message: 'Organozation description must be atleast 20 chars.' }),
 })
 
 export const OrganizationDetails = (
@@ -83,8 +81,8 @@ export const OrganizationDetails = (
       zipCode: data?.zipCode,
       state: data?.state,
       logo: data?.logo,
-      // website: data?.website,
-      // description: data?.description
+      website: data?.website,
+      description: data?.description
     },
   })
   const isLoading = form.formState.isSubmitting
@@ -100,7 +98,7 @@ export const OrganizationDetails = (
     try {
       if (!user?.id) return
 
-      const orgData = {
+      const orgData = { 
         userId: user.id,
         address: values.address,
         logo: values.logo,
@@ -112,8 +110,8 @@ export const OrganizationDetails = (
         createdAt: new Date(),
         updatedAt: new Date(),
         organizationEmail: values.organizationEmail,
-        // website: values.website,
-        // description: values.description
+        website: values.website,
+        description: values.description
       }
 
       if(data?.id) {
@@ -126,7 +124,7 @@ export const OrganizationDetails = (
         const result = await createOrganization(orgData)
 
         if (result) {
-          toast('✅ Organization Created')
+          toast('✅ Organization Created') 
           return router.push('/organization')
         }
       } 
@@ -171,7 +169,24 @@ export const OrganizationDetails = (
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-4"
             >
-              <FormField
+               <FormField
+                  disabled={isLoading}
+                  control={form.control}
+                  name="logo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Organization Logo</FormLabel>
+                      <FormControl>
+                        <ImageUploadComponent 
+                          onChange={field.onChange}
+                          value={field.value}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              {/* <FormField
                 disabled={isLoading}
                 control={form.control}
                 name="logo"
@@ -188,7 +203,7 @@ export const OrganizationDetails = (
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <div className="flex md:flex-row gap-4">
                 <FormField
                   disabled={isLoading}
@@ -226,7 +241,7 @@ export const OrganizationDetails = (
                 />
               </div>
               <div className="flex md:flex-row gap-4">
-                <FormField
+              <FormField
                   disabled={isLoading}
                   control={form.control}
                   name="organizationPhone"
@@ -243,8 +258,7 @@ export const OrganizationDetails = (
                     </FormItem>
                   )}
                 />
-              </div>
-              {/* <FormField
+               <FormField
                 disabled={isLoading}
                 control={form.control}
                 name="website"
@@ -260,7 +274,27 @@ export const OrganizationDetails = (
                     <FormMessage />
                   </FormItem>
                 )}
-              /> */}
+              />
+              </div>
+
+             <FormField
+                disabled={isLoading}
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Organization Description</FormLabel>
+                    <FormControl>
+                    <Textarea
+                        placeholder="Tell us a little bit about your organization"
+                        className="resize-none"
+                        {...field}
+                    />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 disabled={isLoading}
                 control={form.control}

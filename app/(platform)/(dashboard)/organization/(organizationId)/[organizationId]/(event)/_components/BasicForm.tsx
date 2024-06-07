@@ -8,18 +8,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { NumberInput } from '@tremor/react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import FileUpload from '@/components/global/file-upload'
 import { catexts } from '@/lib/constants';
 import { UseFormReturn } from 'react-hook-form';
-import MediaUploadButton from '@/components/media/UploadMediaButton';
+import { ImageUploadComponent } from '@/components/global/media/ImageUploadComponent';
+import { FormSchema, Period } from '@/lib/types';
+import { z } from 'zod';
 
 type Props = {
-  form: UseFormReturn<{
-    name: string;
-    category: string;
-    price: string;
-    banner: string;
-}, any, undefined>
+  form: UseFormReturn<z.infer<typeof FormSchema>>;
 }
 
 export const BasicForm = ({form}: Props) => {
@@ -32,9 +28,9 @@ export const BasicForm = ({form}: Props) => {
       Enter Basic Details About Event
     </h2>
 
-    <div className="grid grid-cols-1 gap-4 gap-y-12 md:grid-cols-1 md:mb-2">
-      {/* Event Name input */}
-      <div className="mb-1">
+    <div className="grid grid-cols-1 gap-y-4 md:gap-4 md:grid-cols-2">
+
+    <div className="mb-1 md:col-span-2">
         <FormField
           disabled={isLoading}
           control={form.control}
@@ -53,17 +49,8 @@ export const BasicForm = ({form}: Props) => {
           )}
         />    
       </div>
-    </div>
 
-    <div className="grid grid-cols-1 gap-4 gap-y-12 mb-[2rem] md:grid-cols-2 md:mb-[2rem]">
-      {/* Event Category input */}
       <div className="mb-1">
-        {/* <SelectInput 
-          label='Event Category' 
-          value={eventCategory}
-          items={catexts} 
-          handleChange={(value) => setEventCategory(value)} 
-        /> */}
         <FormField
           disabled={isLoading}
           control={form.control}
@@ -72,17 +59,22 @@ export const BasicForm = ({form}: Props) => {
             <FormItem className="flex-1">
               <FormLabel>Event Category</FormLabel>
               <FormControl>
-              <Select>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Category" />
+                  <SelectValue placeholder="Category"  />
                 </SelectTrigger>
                 <SelectContent>
                   {
-                    catexts.map((cat) => <SelectItem key={cat} value={cat}>{cat}</SelectItem>)
+                    catexts.map((cat) => 
+                    <SelectItem 
+                    key={cat} 
+                    value={cat}
+                    >
+                      {cat}
+                    </SelectItem>)
                   }
                 </SelectContent>
               </Select>
-
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,7 +82,6 @@ export const BasicForm = ({form}: Props) => {
         />    
       </div>
 
-      {/* Event Price input */}
       <div className="mb-1">
          <FormField
           disabled={isLoading}
@@ -100,25 +91,12 @@ export const BasicForm = ({form}: Props) => {
             <FormItem className="flex-1">
               <FormLabel>Event Price (₦)</FormLabel>
               <FormControl>
-                {/* <Input
-                  placeholder="0"
-                  {...field}
-                /> */}
                 <NumberInput
-                  defaultValue={0}
-                  // onValueChange={async (val) => {
-                  //   if (!data?.id) return
-                  //   await updateAgencyDetails(data.id, { goal: val })
-                  //   await saveActivityLogsNotification({
-                  //     agencyId: data.id,
-                  //     description: `Updated the agency goal to | ${val} Sub Account`,
-                  //     subaccountId: undefined,
-                  //   })
-                  //   router.refresh()
-                  // }}
+                  defaultValue={field.value}
                   min={1}
                   className="bg-background rounded-full px-4 !border !border-input"
                   placeholder="Price"
+                  onChange={field.onChange}
                 />
               </FormControl>
               <FormMessage />
@@ -129,8 +107,7 @@ export const BasicForm = ({form}: Props) => {
       </div>
     </div>
 
-    <div className="grid grid-cols-1 gap-4 gap-y-12 md:grid-cols-1 md:mb-2">
-      {/* Event Upload Banner */}
+    <div className="mt-[2rem] md:mb-2">
       <div className="mb-1">
          <FormField
               disabled={isLoading}
@@ -140,12 +117,10 @@ export const BasicForm = ({form}: Props) => {
                 <FormItem>
                   <FormLabel>Event Banner</FormLabel>
                   <FormControl>
-                    {/* <FileUpload
-                      apiEndpoint="agencyLogo"
+                    <ImageUploadComponent 
                       onChange={field.onChange}
                       value={field.value}
-                    /> */}
-                    <MediaUploadButton />
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

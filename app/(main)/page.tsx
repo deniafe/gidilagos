@@ -1,20 +1,14 @@
-import React from 'react'
-import { Hero } from './_components/Hero'
-import { Category } from './_components/Category'
-import { SkeletonCard } from './_components/SkeletonCard'
-import { CTA } from './_components/CTA'
+import { Metadata } from 'next';
+import { Home } from './_components/Home'
 
+export const metadata: Metadata = {
+  title: 'Search For Events In Your City'
+};
 
 function MainPage() {
   return (
     <div>
-      <Hero />
-      <Category />
-      <h2 className="flex justify-center md:justify-start text-[1.75rem] font-medium px-[2rem]">
-        Latest Events
-      </h2>
-      <SkeletonCard />
-      <CTA />
+      <Home /> 
     </div>
   )
 }

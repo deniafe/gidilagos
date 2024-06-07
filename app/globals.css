@@ -148,6 +148,10 @@ div[role="dialog"] {
   max-width: 60rem;
 }
 
+#ROOT {
+  min-height: 500px;
+}
+
 
 ::-webkit-scrollbar {
   width: 2px;
@@ -188,4 +192,9 @@ div[role="dialog"] {
 /* Corners */
 ::-webkit-scrollbar-corner {
   background: transparent; /* Color of the scrollbar corners */
+}
+
+.unlayer-editor {
+  background-color: var(--editor-bg-color);
+  color: var(--editor-text-color);
 }

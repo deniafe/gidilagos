@@ -10,6 +10,7 @@ import { MobileSidebar } from './MobileSidebar'
 import { Logo } from '@/components/global/Logo'
 import { useOrganization } from '@/providers/organization-provider'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export const Navbar = () => {
   
@@ -27,10 +28,10 @@ export const Navbar = () => {
           <Logo />
         </div>
         <Button size="sm" asChild>
-          <div>
+          <Link href={`/organization/${currentOrg?.id}/create-event`}>
            <Plus size={16}/>
             <span className="hidden md:flex" >New Event</span>
-          </div>
+          </Link>
         </Button>
        </div>
        <div className="ml-auto flex items-center gap-x-2">
@@ -40,9 +41,9 @@ export const Navbar = () => {
             alt={'Organization Logo'} 
             width={20}
             height={20}
-            className='rounded'
+            className='rounded w-[30px] h-[30px] sm:w-[20px] sm:h-[20px]'
             ></Image>
-            <span className="pl-1">
+            <span className="pl-1 hidden sm:inline-block">
               {currentOrg?.name}
             </span>
         </div>

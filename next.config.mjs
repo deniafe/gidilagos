@@ -9,6 +9,10 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "firebasestorage.googleapis.com"
+      },
+      {
+        protocol: "https",
         hostname: "utfs.io"
       },
       {
@@ -19,6 +23,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "subdomain"
       },
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com"
+      }
     ],
   }
 };

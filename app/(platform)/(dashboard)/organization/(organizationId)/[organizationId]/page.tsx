@@ -7,7 +7,7 @@ type Props = {
 async function OrganizationIdPage({ params }: Props) {  
 
   const {organizationId} = params
-  
+
   return (
    <OrganizationEventList orgId={organizationId} />
   )

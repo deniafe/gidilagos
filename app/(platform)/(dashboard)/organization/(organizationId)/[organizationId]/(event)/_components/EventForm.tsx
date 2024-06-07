@@ -10,9 +10,16 @@ import { Button } from '@/components/ui/button'
 import { Loading } from "@/components/global/Loading";
 import { useOrganization } from "@/providers/organization-provider";
 import Steps from "./Steps";
-import { Event } from "@/lib/types";
+import { Event, EventAddress, EventLinks, FormSchema, LGA, Period } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { BasicForm } from "./BasicForm";
+import { DescriptionForm } from "./DescriptionForm";
+import { DateForm } from "./DateForm";
+import { AddressForm } from "./AddressForm";
+import { SocialLinkForm } from "./SocialLinkForm";
+import { createSlug, formatDate } from "@/lib/utils";
+import { createEvent, updateEvent } from "@/actions/event.actions";
+import { useRouter } from "next/navigation";
 
 type Props = {
   data?: Partial<Event>
@@ -27,23 +34,24 @@ enum STEPS {
   LINKS = 4,
 }
 
-const FormSchema = z.object({
-  name: z.string().min(3, { message: 'Event Name cannot be less than 3 characters.' }),
-  category: z.string().min(4, { message: 'Organization email must be atleast 4 chars.' }),
-  price: z.string().min(10, { message: 'Phone number must be atleast 10 chars.' }),
-  banner: z.string().min(1, { message: 'Organization logo required.' }),
-  // website: z.string(),
-  // description: z.string(),
-})
-
 export function EventForm({ orgId, data }: Props) {
 
   const { setCurrentOrganizationId } = useOrganization();
   setCurrentOrganizationId(orgId)
+  const route = useRouter()
 
   const [step, setStep] = useState(STEPS.BASICS);
   const [loading, setLoading] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [regions, setRegions] = useState<LGA[]>([])
+  const [regionNames, setRegionNames] = useState<string[]>([]) 
+  const [center, setCenter] = useState<[number, number]>([6.5244, 3.3792])
+  const [zoom, setZoom] = useState<number>(8)
+
+  useEffect(() => {
+    data?.venue?.center && setCenter(data?.venue?.center)
+    data?.venue?.zoom && setZoom(data?.venue?.zoom)
+  }, [data])
+  
 
   const form = useForm<z.infer<typeof FormSchema>>({
     mode: 'onChange',
@@ -51,18 +59,23 @@ export function EventForm({ orgId, data }: Props) {
     defaultValues: {
       name: data?.name,
       category: data?.category,
-      price: data?.price,
+      price: data?.price || '0',
       banner: data?.banner,
-      // website: data?.website,
-      // description: data?.description
+      description: data?.description,
+      date: {
+        from: data?.date?.from ? new Date(formatDate(data.date.from)) : new Date(),
+        to: data?.date?.to ? new Date(formatDate(data.date.to)) : new Date(),
+      },
+      time: data?.time || {hours: 12, minutes: 0, period: Period.AM},
+      state: data?.venue?.state,
+      region: data?.venue?.region,
+      street: data?.venue?.street,
+      website: data?.links?.website,
+      linkedin: data?.links?.linkedin,
+      instagram: data?.links?.instagram,
+      twitter: data?.links?.twitter,
     },
   })
-
-  const isLoading = form.formState.isSubmitting
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -90,83 +103,109 @@ export function EventForm({ orgId, data }: Props) {
     return 'Back'
   }, [step]);
 
+  const changeTab = () => {
+    if (step !== STEPS.LINKS) {
+      return onNext();
+    }
+  }
 
   const handleSubmit = async (values: z.infer<typeof FormSchema>) => {
-
     try {
       if (!orgId) return
 
-      const orgData = {
+      setLoading(true)
+
+      const addr: EventAddress = {
+        center,
+        zoom,
+        state: values.state,
+        region: values.region,
+        street: values.street
+      }
+
+      const links: EventLinks = {
+        website: values.website,
+        twitter: values.twitter,
+        instagram: values.instagram,
+        linkedin: values.linkedin
+      }
+
+      const slug = createSlug(values.name)
+
+      const eventData: Partial<Event> = {
+        createdAt: new Date(),
+        updatedAt: new Date(),
         organizationId: orgId,
         name: values.name,
         category: values.category,
         banner: values.banner,
         price: values.price,
-        // website: values.website,
-        // description: values.description
+        isFree: !parseInt(values.price),
+        isApproved: true,
+        date: values.date,
+        time: values.time,
+        description: values.description,
+        venue: addr,
+        links,
+        slug
       }
 
+      if(data?.id) {
+        await updateEvent(data.id, eventData)
+        toast('✅ Event updates successfully')
+      } else {
+        await createEvent(eventData)
+        toast('✅ Event created successfully')
+      }
+
+      route.push(`/organization/${orgId}`)
+      setLoading(false)
+
+      console.log('Handle submit has been clicked', values)
+
     } catch (error) {
-      console.log(error)
-      toast('⛔ Oppse!', {description: 'could not create or update your organization'})
+      setLoading(false)
+      toast('⛔ Oppse!', {description: 'could not create or update your event'})
     }
   }
-
 
   let bodyContent = (
     <BasicForm form={form} />
   )
 
-  // if (step === STEPS.DATE) {
-  //   bodyContent = (
-  //     <DateForm 
-  //       setEventDate={setEventDate} 
-  //       eventDate={eventDate} 
-  //       setEventTime={setEventTime} 
-  //       eventTime={eventTime}
-  //       />
-  //   );
-  // }
+  if (step === STEPS.DATE) {
+    bodyContent = (
+      <DateForm form={form} />
+    );
+  }
 
-  // if (step === STEPS.ADDRESS) {
-  //   bodyContent = (
-  //     <AddressForm 
-  //       setEventState={setEventState} 
-  //       setEventRegion={setEventRegion} 
-  //       setEventAddress={setEventAddress} 
-  //       setRegions={setRegions} 
-  //       setRegionNames={setRegionNames}
-  //       setCenter={setCenter}
-  //       setZoom={setZoom}
-  //       regions={regions}
-  //       regionNames={regionNames}
-  //       eventState={eventState}
-  //       eventRegion={eventRegion}
-  //       eventAddress={eventAddress}
-  //       center={center}
-  //       zoom={zoom}
-  //     />
-  //   );
-  // }
+  if (step === STEPS.ADDRESS) {
+    bodyContent = (
+      <AddressForm 
+        form={form}
+        setRegions={setRegions} 
+        setRegionNames={setRegionNames}
+        setCenter={setCenter}
+        setZoom={setZoom}
+        regions={regions}
+        regionNames={regionNames}
+        center={center}
+        zoom={zoom}
+      />
+    );
+  }
 
-  // if (step === STEPS.DESCRIPTION) {
-  //   bodyContent = (
-  //     <DescriptionForm setEventDescription={setEventDescription} eventDescription={eventDescription} />
-  //   );
-  // }
+  if (step === STEPS.DESCRIPTION) {
+    bodyContent = (
+      <DescriptionForm form={form} />
+    );
+  }
 
-  // if (step === STEPS.LINKS) {
-  //   bodyContent = (
-  //     <SocialLinkForm 
-  //       setTwitter={setTwitter} 
-  //       setInstagram={setInstagram} 
-  //       setLinkedIn={setLinkedIn}
-  //       twitter={twitter}
-  //       instagram={instagram}
-  //       linkedIn={linkedIn}   
-  //       />
-  //   );
-  // }
+  if (step === STEPS.LINKS) {
+    bodyContent = (
+      <SocialLinkForm form={form} />
+    );
+  }
 
   return (
     <section
@@ -175,7 +214,7 @@ export function EventForm({ orgId, data }: Props) {
       <div className="mt-8 md:mt-2 px-[2rem]">
 
         <div className="md:px-[4rem]  md:mb-0" >
-          <h1 id="share" className="text-center text-[1.75rem] text-black font-medium mb-4 md:mb-12">
+          <h1 id="share" className="text-center text-[1.75rem] text-black dark:text-white font-medium mb-4 md:mb-12">
             Share Your Event On Gidiopolis
           </h1>
 
@@ -188,61 +227,37 @@ export function EventForm({ orgId, data }: Props) {
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-4"
             >
-
-            {/* <form 
-             data-te-validation-init
-             data-te-active-validation="true"
-             className="md:mx-[4rem] md:mb-8"
-            > */}
-
                 {bodyContent}
               
-              {/* Submit button */}
+              {/* Navigation buttons */}
               <div className="flex justify-end space-x-4 mt-[4rem]">
                 {secondaryAction && secondaryActionLabel && (
-                    <Button onClick={secondaryAction}>
+                    <Button type="button" onClick={secondaryAction}>
                       <span className="px-4">{secondaryActionLabel}</span>
                     </Button> 
                 )}
-
-                <Button>
+                {step !== STEPS.LINKS && (
+                  <Button type="button" onClick={changeTab}>
+                    <span className="px-4">Next</span>
+                  </Button>
+                )}
+                {step === STEPS.LINKS && (
+                  <Button disabled={loading} type="submit">
                     {
                       loading ?
                       (<Loading />) :
                       (
-                        <span className="px-4">{actionLabel}</span>
+                        <span className="px-4">{data ? 'Update Event' : 'Create New Event'}</span>
                       )
                     }
-                </Button> 
+                  </Button>
+                )}
               </div>
-              
-
-              {/* <div
-                className="my-8 inline-block text-center cursor-pointer w-full rounded-full bg-my-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#31859C] transition duration-150 ease-in-out hover:bg-cyan-700 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-cyan-700 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-cyan-800 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-                data-te-ripple-init
-                data-te-ripple-color="light"
-                onClick={handleFormSubmit}
-              >
-
-                {
-                  loading ?
-                  (<Loading />) :
-                  (
-                    <span>
-                      Create New Event
-                    </span>
-                  )
-                }
-              </div> */}
-             
              </form>
           </Form>
           </div>
-          
         </div>
-        
       </div>
-      
     </section>
   )
 }

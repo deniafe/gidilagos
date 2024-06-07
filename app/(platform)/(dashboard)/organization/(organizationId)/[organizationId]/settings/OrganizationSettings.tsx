@@ -22,17 +22,7 @@ export const OrganizationSettings = ({orgId}: Props) => {
     >
       <div className="flex flex-col items-center gap-1 text-center">
         <OrganizationDetails
-          data={{ 
-            id: currentOrg?.id,
-            logo: currentOrg?.logo,
-            name: currentOrg?.name,
-            organizationEmail: currentOrg?.organizationEmail,
-            organizationPhone: currentOrg?.organizationPhone,
-            address: currentOrg?.address,
-            city: currentOrg?.city,
-            state: currentOrg?.state,
-            zipCode: currentOrg?.zipCode
-          }}
+          data={currentOrg || undefined}
         />
       </div> 
     </div>
