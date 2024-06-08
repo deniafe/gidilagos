@@ -1,6 +1,6 @@
 import MediaProvider from '@/providers/media-provider'
 import { Sidebar } from './_components/Sidebar'
-import { Navbar } from '@/app/(main)/_components/Navbar'
+import { Navbar } from './_components/Navbar'
 
 function PlatformLayout({children} : {children: React.ReactNode}) {
 

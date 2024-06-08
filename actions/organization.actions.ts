@@ -29,7 +29,7 @@ import { currentUser } from '@clerk/nextjs/server';
 //     handleError(error);
 //     return [] as Organization[]
 //   }
-// }
+// } 
 
 export async function getAllOrganizations(): Promise<Organization[]> {
   let app: any = await getApp();

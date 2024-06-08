@@ -2,7 +2,7 @@
 import { addDoc, collection, doc, deleteDoc, DocumentReference, updateDoc, getDocs, query, where, setDoc, QueryDocumentSnapshot, getDoc, orderBy, startAfter, limit, collectionGroup, Timestamp, Firestore, FieldPath } from 'firebase/firestore'
 import { startOfToday, endOfToday, startOfWeek, endOfWeek, startOfMonth, endOfMonth, addWeeks, addMonths, isAfter, addDays } from 'date-fns';
 
-import { Event, SearchOptions } from '@/lib/types';
+import { Event, Organization, SearchOptions } from '@/lib/types';
 import { db } from './config'
 
 export async function getOrganizationEvents(organizationId: string, pageSize: number, lastVisible: QueryDocumentSnapshot | null = null) {
@@ -245,6 +245,7 @@ export async function getCategoryEvents(category: string, pageSize: number, last
     if (lastVisible) {
       eventsQuery = query(
         eventsCollection,
+        where('isApproved', '==', true),
         where('category', '==', category),
         orderBy('createdAt'),
         startAfter(lastVisible),
@@ -253,7 +254,8 @@ export async function getCategoryEvents(category: string, pageSize: number, last
     } else {
       eventsQuery = query(
         eventsCollection,
-        where('organizationId', '==', category),
+        where('isApproved', '==', true),
+        where('category', '==', category),
         orderBy('createdAt'),
         limit(pageSize)
       );
@@ -367,6 +369,40 @@ export async function getEventById(eventId: string) {
   } catch (e) {
     console.error('Error getting document: ', e);
     return { event: null, error: e };
+  }
+}
+
+export async function getOrganizationById(organizationId: string) {
+  try {
+    const organizationDocRef = doc(db, 'organizations', organizationId);
+    const organizationDocSnap = await getDoc(organizationDocRef);
+
+    if (organizationDocSnap.exists()) {
+      const data = organizationDocSnap.data();
+      const organization: Organization = {
+        id: organizationDocSnap.id,
+        userId: data.userId,
+        name: data.name,
+        logo: data.logo,
+        organizationEmail: data.organizationEmail,
+        organizationPhone: data.organizationPhone,
+        website: data.website,
+        description: data.description,
+        address: data.address,
+        city: data.city,
+        zipCode: data.zipCode,
+        state: data.state,
+      };
+
+      console.log('Organization found: ', organization);
+      return { organization, error: null };
+    } else {
+      console.log('No such document!');
+      return { organization: null, error: 'No such document' };
+    }
+  } catch (e) {
+    console.error('Error getting document: ', e);
+    return { organization: null, error: e };
   }
 }
 

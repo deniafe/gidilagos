@@ -10,7 +10,8 @@ interface Props {
 }
 
 export const EventCard: React.FC<Props> = ({ event }) => {
-  const router = useRouter()
+  const router = useRouter();
+  const currentUrl = typeof window !== 'undefined' ? window.location.origin : '';
 
   return (
     <div
@@ -29,7 +30,7 @@ export const EventCard: React.FC<Props> = ({ event }) => {
           <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsla(0,0%,98%,0.15)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
         </a>
         <div className="absolute bottom-0 right-0 m-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <ShareButton link={`https://gidiopolis.com/e/${event.id}/${event.slug}`} />
+          <ShareButton link={`${currentUrl}/e/${event.id}/${event.slug}`} />
         </div>
       </div>
       <div className="px-3 py-8">

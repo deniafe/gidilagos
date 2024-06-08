@@ -10,13 +10,17 @@ import { PublicSector } from '@/components/icons/PublicSector';
 import { Religious } from '@/components/icons/Religious';
 import { Tech } from '@/components/icons/Tech';
 
+interface CategoryProps {
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+}
 
-interface Category {
+interface CategoryItem {
   label: string;
   icon: JSX.Element;
 }
 
-const categories: Category[] = [
+const categories: CategoryItem[] = [
   { label: 'All', icon: <Others /> },
   { label: 'Arts & Culture', icon: <Arts /> },
   { label: 'Music/Concert', icon: <Concert /> },
@@ -28,18 +32,14 @@ const categories: Category[] = [
   { label: 'IT/Tech', icon: <Tech /> },
 ];
 
-export const Category = () => {
-  const [ selectedCategory, setSelectedCategory ] = useState('All');
-
+export const Category: React.FC<CategoryProps> = ({ selectedCategory, onCategoryChange }) => {
   return (
     <section className="mb-20 mt-24">
       <div className="flex flex-row flex-wrap lg:flex-nowrap justify-around px-[2rem] text-xs mt-8">
         {categories.map((category) => (
           <div
             key={category.label}
-            onClick={() => {
-              setSelectedCategory(category.label);
-            }}
+            onClick={() => onCategoryChange(category.label)}
             className={`flex flex-col min-w-[150px] lg:min-w-0 lg:flex-row lg:w-auto rounded-lg py-2 cursor-pointer lg:rounded-full px-2 ${
               selectedCategory === category.label ? 'bg-primary text-white' : ''
             }`}

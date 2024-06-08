@@ -11,7 +11,7 @@ import { dark } from '@clerk/themes';
 import { useTheme } from "next-themes";
 import { toast } from 'sonner';
 import { subscribeUser } from '@/actions/newsletter.actions';
-import { NewsletterSubscription } from './NewsletterSubscription';
+import { MobileSidebar } from './MobileNavbar';
 
 export const Navbar = () => {
   const { user } = useUser();
@@ -34,33 +34,12 @@ export const Navbar = () => {
   return (
     <nav className="md:max-w-screen-2xl z-[1] fixed top-0 w-full py-2 px-2 md:px-4 shadow-sm bg-secondary flex items-center md:py-4">
       <div className="flex items-center gap-x-4">
-        <div className="md:flex">
+        <MobileSidebar />
+        <div className="hidden md:flex">
           <Logo />
         </div>
       </div>
       <div className="ml-auto flex items-center gap-x-2">
-
-        <div className="hidden md:flex">
-          {user && <NewsletterSubscription />}
-          <Button size="sm" variant="ghost" asChild>
-            <Link href="/">
-              About
-            </Link>
-          </Button>
-          <Button size="sm" variant="ghost" asChild>
-            <Link href="/">
-              Blog
-            </Link>
-          </Button>
-
-          {user?.primaryEmailAddress?.emailAddress && adminEmails.includes(user.primaryEmailAddress.emailAddress) && (
-            <Button size="sm" variant="ghost" asChild>
-              <Link href="/admin">
-                Admin
-              </Link>
-            </Button>
-          )}
-        </div>
 
         <Button size="sm" asChild>
           <Link href="/organization">
