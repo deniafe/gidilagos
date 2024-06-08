@@ -19,7 +19,7 @@ export const Footer = () => {
             </h6>
             {company.map((link, index) => (
               <p key={index} className="mb-6">
-              <a href="#!">
+              <a href={link.url}>
                 {link.title}
               </a>
             </p>
@@ -33,7 +33,7 @@ export const Footer = () => {
             </h6>
             {resources.map((link, index) => (
               <p key={index} className="mb-6">
-              <Link href="#!">
+              <Link href={link.url}>
                 {link.title}
               </Link>
             </p>

@@ -17,7 +17,7 @@ const SimilarEvent = ({events, title}: Props) => {
 
   return (
     <section
-      className="mb-20 md:mb-32"
+      className="mt-16 mb-1 md:mt-24 md:mb-8"
     >
        <h2 className="flex justify-center md:justify-start text-[1.5rem] font-medium px-[2rem]">
           {title}

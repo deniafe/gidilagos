@@ -44,15 +44,15 @@ export const catexts = [  'Arts & Culture',  'Night Life', 'Music/Concert',  'Pu
 export const company = [
   {
     title: 'About',
-    url: '/about'
+    url: 'https://blog.gidiopolis.com/about/'
   },
-  {
-    title: 'Contact',
-    url: '/contact'
-  },
+  // {
+  //   title: 'Contact',
+  //   url: '/contact'
+  // },
   {
     title: 'Blog',
-    url: '/blog'
+    url: 'https://blog.gidiopolis.com/'
   },
 ];
 

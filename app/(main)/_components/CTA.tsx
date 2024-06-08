@@ -7,7 +7,7 @@ export const CTA = () => {
 
   return (
     <section
-      className="mb-8"
+      className="mb-8 md:mb-32"
     >
       
       <div className="grid grid-cols-1 gap-4 gap-y-12 md:grid-cols-2 mt-12 md:mt-20 px-[2rem]">

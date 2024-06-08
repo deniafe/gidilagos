@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`
   },
-  description: siteConfig.description,
+  description: siteConfig.description, 
   icons: [
     {
       url: '/favicon.svg',

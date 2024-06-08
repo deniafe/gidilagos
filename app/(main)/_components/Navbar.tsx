@@ -43,14 +43,14 @@ export const Navbar = () => {
         <div className="hidden md:flex">
           {user && <NewsletterSubscription />}
           <Button size="sm" variant="ghost" asChild>
-            <Link href="/">
+            <a href="https://blog.gidiopolis.com/about/">
               About
-            </Link>
+            </a>
           </Button>
           <Button size="sm" variant="ghost" asChild>
-            <Link href="/">
+            <a href="https://blog.gidiopolis.com/">
               Blog
-            </Link>
+            </a>
           </Button>
 
           {user?.primaryEmailAddress?.emailAddress && adminEmails.includes(user.primaryEmailAddress.emailAddress) && (

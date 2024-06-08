@@ -2,8 +2,10 @@
 import { addDoc, collection, doc, deleteDoc, DocumentReference, updateDoc, getDocs, query, where, setDoc, QueryDocumentSnapshot, getDoc, orderBy, startAfter, limit, collectionGroup, Timestamp, Firestore, FieldPath } from 'firebase/firestore'
 import { startOfToday, endOfToday, startOfWeek, endOfWeek, startOfMonth, endOfMonth, addWeeks, addMonths, isAfter, addDays } from 'date-fns';
 
-import { Event, Organization, SearchOptions } from '@/lib/types';
+import { Event, Media, Organization, SearchOptions } from '@/lib/types';
 import { db } from './config'
+import { handleError } from '@/lib/utils';
+import { currentUser, getAuth } from '@clerk/nextjs/server';
 
 export async function getOrganizationEvents(organizationId: string, pageSize: number, lastVisible: QueryDocumentSnapshot | null = null) {
   const eventsCollection = collection(db, 'events');
@@ -576,6 +578,30 @@ export async function searchEvents(searchParams: SearchOptions, pageSize: number
   } catch (e) {
     console.error("Error fetching events:", e);
     return { events: [] as Event[], lastVisible: null, error: e };
+  }
+}
+
+
+export async function getAllMedia(userId: string) {
+  try {
+    // Reference to the media collection
+    const mediaCollection = collection(db, 'media');
+
+    // Query to get media documents that belong to the authenticated user
+    const mediaQuery = query(mediaCollection, where("userId", "==", userId));
+    const mediaSnapshot = await getDocs(mediaQuery);
+
+    // Extract media documents from the snapshot
+    const media: Media[] = [];
+    mediaSnapshot.forEach((doc) => {
+      media.push({ id: doc.id, ...doc.data() } as Media);
+    });
+
+    return media;
+  } catch (error) {
+    handleError(error);
+    console.log(error)
+    return [] as Media[];
   }
 }
 

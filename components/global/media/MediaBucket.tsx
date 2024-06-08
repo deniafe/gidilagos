@@ -10,10 +10,11 @@ import {
 } from '../../ui/command';
 import { FolderSearch } from 'lucide-react';
 import { CardDescription, CardHeader, CardTitle } from '../../ui/card';
-import { getAllMedia } from '@/actions/media.action';
 import { toast } from 'sonner';
 import MediaCard from './MediaCard';
 import { SkeletonMediaCard } from './SkeletonMediaCard';
+import { getAllMedia } from '@/Firebase/queries';
+import { useUser } from '@clerk/nextjs';
 
 type Props = {
   setImgUrl: (url: string) => void;
@@ -23,11 +24,14 @@ export const MediaBucket = ({setImgUrl}: Props ) => {
   const [data, setData] = useState<Media[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const {user} = useUser()
+  const userId = user?.id || ''
+
   useEffect(() => {
     const getMedia = async () => {
       setLoading(true);
       try {
-        const allMedia = await getAllMedia();
+        const allMedia = await getAllMedia(userId);
         setData(allMedia);
         setLoading(false);
       } catch (e) {

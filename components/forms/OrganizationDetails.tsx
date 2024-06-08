@@ -158,7 +158,7 @@ export const OrganizationDetails = (
     <AlertDialog>
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>{title}</CardTitle>
+          {/* <CardTitle>{title}</CardTitle> */}
           <CardDescription>
             {description}
           </CardDescription>

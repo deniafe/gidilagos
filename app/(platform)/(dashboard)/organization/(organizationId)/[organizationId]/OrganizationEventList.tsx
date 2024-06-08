@@ -81,7 +81,7 @@ export const OrganizationEventList = ({orgId}: Props) => {
             You can start promoting as soon as you create an event.
           </p>
           <Button>
-          <Link href={`http://localhost:3000/organization/${orgId}/create-event`}>
+          <Link href={`/organization/${orgId}/create-event`}>
             Create Event
           </Link>
           </Button>

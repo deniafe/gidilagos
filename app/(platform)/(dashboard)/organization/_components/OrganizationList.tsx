@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import {
   MoreHorizontal,
   Plus,
@@ -61,6 +61,7 @@ export const OrganizationList = ({organizations, storageKey = 'gidi-sidebar-stat
   const [currentOrganizationId, setCurrentOrganizationId] = useState<string>()
   const {setOrganizations} = useOrganization()
   const { toast } = useToast()
+  const router = useRouter()
 
   if(!organizations.length) {
     redirect('/organization/create')
@@ -93,71 +94,81 @@ export const OrganizationList = ({organizations, storageKey = 'gidi-sidebar-stat
                 </TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="w-full">
               {organizations.map((organization) => (
-                <TableRow key={organization.id}>
-                  <TableCell className="hidden sm:table-cell">
-                    <Image
-                      alt="Product image"
-                      className="aspect-square rounded-md object-cover"
-                      height="64"
-                      src={organization.logo} // Replace with actual image source
-                      width="64"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">
-                    {organization.name}
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    2023-07-12 10:42 AM
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          aria-haspopup="true"
-                          size="icon"
-                          variant="ghost"
-                        >
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <Link
-                          href={`/organization/${organization.id}`} 
-                          >
-                          <DropdownMenuItem 
-                          className="cursor-pointer flex justify-center"
-                          onClick={() => {
-                            const activeOrganizationId = organization.id || ''
-                            setExpanded((curr: any) => ({
-                              ...curr,
-                              [activeOrganizationId]: true,
-                            }))
-                            console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', activeOrganizationId)
-                            console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', expanded)
-                          }}
-                          >
-                            View
-                          </DropdownMenuItem>
-                        </Link>
-                        
-                          <DropdownMenuItem 
-                            className="cursor-pointer"
-                            onClick={() => setCurrentOrganizationId(organization.id)}
-                          >
-                            <AlertDialogTrigger className="w-full" >Delete</AlertDialogTrigger>
-                          </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+                <TableRow 
+                  className="cursor-pointer"
+                  key={organization.id}
+                  onClick={() => {
+                  const activeOrganizationId = organization.id || ''
+                  setExpanded((curr: any) => ({
+                    ...curr,
+                    [activeOrganizationId]: true,
+                  }))
+                  router.push(`/organization/${organization.id}`) 
+                }}>
+                   {/* <div > */}
+                      <TableCell className="hidden sm:table-cell">
+                        <Image
+                          alt="Product image"
+                          className="aspect-square rounded-md object-cover"
+                          height="64"
+                          src={organization.logo} // Replace with actual image source
+                          width="64"
+                        />
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {organization.name}
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        2023-07-12 10:42 AM
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              aria-haspopup="true"
+                              size="icon"
+                              variant="ghost"
+                            >
+                              <MoreHorizontal className="h-4 w-4" />
+                              <span className="sr-only">Toggle menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <Link
+                              href={`/organization/${organization.id}`} 
+                              >
+                              <DropdownMenuItem 
+                              className="cursor-pointer flex justify-center"
+                              onClick={() => {
+                                const activeOrganizationId = organization.id || ''
+                                setExpanded((curr: any) => ({
+                                  ...curr,
+                                  [activeOrganizationId]: true,
+                                }))
+                              }}
+                              >
+                                View
+                              </DropdownMenuItem>
+                            </Link>
+                            
+                              <DropdownMenuItem 
+                                className="cursor-pointer"
+                                onClick={() => setCurrentOrganizationId(organization.id)}
+                              >
+                                <AlertDialogTrigger className="w-full" >Delete</AlertDialogTrigger>
+                              </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    {/* </div> */}
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </CardContent>
-        <CardFooter>
+        {/* <CardFooter>
           <div className="text-sm font-medium text-muted-foreground py-2"> 
             <Link
               href="/organization/create"
@@ -165,7 +176,7 @@ export const OrganizationList = ({organizations, storageKey = 'gidi-sidebar-stat
               <Button variant="outline" size="sm" ><Plus className="pr-2 h-6 w-6"/> Create new organization </Button>
             </Link>
           </div>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
       <AlertDialogContent>
         <AlertDialogHeader>

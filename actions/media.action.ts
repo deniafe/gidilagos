@@ -6,29 +6,6 @@ import { addDoc, collection, getFirestore, doc, deleteDoc, updateDoc, getDoc, Do
 import { Media } from '@/lib/types';
 import { handleError } from '@/lib/utils';
 
-
-export async function getAllMedia() {
-  let app: any = await getApp();
-  if (!app) return [] as Media[];
-
-  const db = getFirestore(app);
-
-  try {
-    const mediaCollection = collection(db, 'media');
-    const mediaSnapshot = await getDocs(mediaCollection);
-
-    const media: Media[] = [];
-    mediaSnapshot.forEach((doc) => {
-      media.push({ id: doc.id, ...doc.data() } as Media);
-    });
-
-    return media;
-  } catch (error) {
-    handleError(error);
-    return [] as Media[];
-  }
-}
-
 export async function createMedia(media: Partial<Media>) {
   let app: any = await getApp();
   if(!app) return;

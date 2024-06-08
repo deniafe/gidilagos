@@ -35,7 +35,7 @@ import {
                 <FormLabel>Event Website Url</FormLabel>
                 <FormControl>
                 <Input
-                    placeholder="Website"
+                    placeholder="https://your-website.com/your-event"
                     {...field}
                   />
                 </FormControl>
@@ -52,10 +52,10 @@ import {
             name="twitter"
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>Event Twitter Url</FormLabel>
+                <FormLabel>Event X Url(Formerly Twitter)</FormLabel>
                 <FormControl>
                 <Input
-                    placeholder="Twitter"
+                    placeholder="https://x.com/your-event"
                     {...field}
                   />
                 </FormControl>
@@ -76,7 +76,7 @@ import {
                 <FormLabel>Event LinkedIn Url</FormLabel>
                 <FormControl>
                 <Input
-                    placeholder="LinkedIn"
+                    placeholder="https://linkedin.com/your-event"
                     {...field}
                   />
                 </FormControl>
@@ -96,7 +96,7 @@ import {
                 <FormLabel>Event Instagram Url</FormLabel>
                 <FormControl>
                 <Input
-                    placeholder="Instagram"
+                    placeholder="https://instagram.com/your-event"
                     {...field}
                   />
                 </FormControl>

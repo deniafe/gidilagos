@@ -141,7 +141,7 @@ export function EventForm({ orgId, data }: Props) {
         banner: values.banner,
         price: values.price,
         isFree: !parseInt(values.price),
-        isApproved: true,
+        isApproved: false,
         date: values.date,
         time: values.time,
         description: values.description,
