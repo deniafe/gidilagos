@@ -1,5 +1,5 @@
 'use client'
-import { Organization, User } from '@/lib/types'
+import { User } from '@/lib/types'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 interface ModalProviderProps {
@@ -8,7 +8,6 @@ interface ModalProviderProps {
 
 export type ModalData = {
   user?: User
-  organization?: Organization
 }
 type ModalContextType = {
   data: ModalData
