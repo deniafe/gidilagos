@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react";
-import Map from '@/app/(platform)/(dashboard)/organization/(organizationId)/[organizationId]/(event)/_components/Map';
+// import Map from '@/app/(platform)/(dashboard)/organization/(organizationId)/[organizationId]/(event)/_components/Map';
 import { formatDate } from '@/lib/utils';
 import Image from 'next/image';
 import SimilarEvent from './SimilarEvent';
@@ -9,6 +9,7 @@ import { Event } from '@/lib/types';
 import { toast } from "sonner";
 import { getCategoryEvents, getEventById } from "@/Firebase/queries";
 import { OrganizerIcon } from "@/components/icons/EventDetails";
+import Map from "@/app/(platform)/(eventdashboard)/_components/Map";
 // import Map from './Map';
 // import { DateRange } from 'react-date-range';
 
