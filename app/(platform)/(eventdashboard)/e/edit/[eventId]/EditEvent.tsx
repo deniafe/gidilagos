@@ -6,9 +6,9 @@ import { toast } from "sonner";
 import { Event } from '@/lib/types';
 import { useRouter } from "next/navigation";
 
-type Props = { orgId: string, eventId: string }
+type Props = { eventId: string }
 
-export const EditEvent = ({orgId, eventId}: Props) => {
+export const EditEvent = ({eventId}: Props) => {
     const [event, setEvent] = useState<Event>({} as Event);
     const [loading, setLoading] = useState(true);
 
@@ -23,7 +23,7 @@ export const EditEvent = ({orgId, eventId}: Props) => {
             console.log('There is an error')
             setLoading(false)
             toast('⛔ Oppse!', {description: 'could get event'})
-            return router.push(`/organization/${orgId}`)
+            return router.push(`/`)
           }
     
           const data = result?.event
@@ -34,7 +34,7 @@ export const EditEvent = ({orgId, eventId}: Props) => {
       }, [eventId]);
   return (
     <>
-        {event?.id && <EventForm orgId={orgId} data={event}/>}
+        {event?.id && <EventForm data={event}/>}
     </>
   )
 }
