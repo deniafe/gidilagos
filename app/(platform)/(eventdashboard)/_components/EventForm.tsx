@@ -174,7 +174,7 @@ export function EventForm({data}: Props) {
         toast('✅ Event updates successfully')
       } else {
         await createEvent(eventData)
-        toast('✅ Event created successfully')
+        toast('✅ Event created successfully and awaiting approval.')
       }
 
       route.push(`/`)
