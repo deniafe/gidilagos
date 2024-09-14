@@ -2,12 +2,12 @@
 import { addDoc, collection, doc, deleteDoc, DocumentReference, updateDoc, getDocs, query, where, setDoc, QueryDocumentSnapshot, getDoc, orderBy, startAfter, limit, collectionGroup, Timestamp, Firestore, FieldPath } from 'firebase/firestore'
 import { startOfToday, endOfToday, startOfWeek, endOfWeek, startOfMonth, endOfMonth, addWeeks, addMonths, isAfter, addDays } from 'date-fns';
 
-import { Event, Media, Organization, SearchOptions } from '@/lib/types';
+import { Event, Media, SearchOptions } from '@/lib/types';
 import { db } from './config'
 import { handleError } from '@/lib/utils';
 import { currentUser, getAuth } from '@clerk/nextjs/server';
 
-export async function getOrganizationEvents(organizationId: string, pageSize: number, lastVisible: QueryDocumentSnapshot | null = null) {
+export async function getUserEvents(userId: string, pageSize: number, lastVisible: QueryDocumentSnapshot | null = null) {
   const eventsCollection = collection(db, 'events');
 
   try {
@@ -15,7 +15,7 @@ export async function getOrganizationEvents(organizationId: string, pageSize: nu
     if (lastVisible) {
       eventsQuery = query(
         eventsCollection,
-        where('organizationId', '==', organizationId),
+        where('userId', '==', userId),
         orderBy('createdAt'),
         startAfter(lastVisible),
         limit(pageSize)
@@ -23,7 +23,7 @@ export async function getOrganizationEvents(organizationId: string, pageSize: nu
     } else {
       eventsQuery = query(
         eventsCollection,
-        where('organizationId', '==', organizationId),
+        where('userId', '==', userId),
         orderBy('createdAt'),
         limit(pageSize)
       );
@@ -35,7 +35,7 @@ export async function getOrganizationEvents(organizationId: string, pageSize: nu
       const data = doc.data()
       const event: Event = {
         id: doc.id,
-        organizationId: data.organizationId,
+        userId: data.userId,
         name: data.name,
         banner: data.banner,
         category: data.category,
@@ -67,7 +67,8 @@ export async function getOrganizationEvents(organizationId: string, pageSize: nu
         },
         isApproved: data.isApproved,
         createdAt: data.createdAt,
-        updatedAt: data.updatedAt
+        updatedAt: data.updatedAt,
+        organization: data.organization
       }
      return event
     });
@@ -112,7 +113,7 @@ export async function getAllEvents(pageSize: number, lastVisible: QueryDocumentS
       const data = doc.data();
       const event: Event = {
         id: doc.id,
-        organizationId: data.organizationId,
+        userId: data.userId,
         name: data.name,
         banner: data.banner,
         category: data.category,
@@ -144,7 +145,8 @@ export async function getAllEvents(pageSize: number, lastVisible: QueryDocumentS
         },
         isApproved: data.isApproved,
         createdAt: data.createdAt,
-        updatedAt: data.updatedAt
+        updatedAt: data.updatedAt,
+        organization: data.organization
       };
       return event;
     });
@@ -189,7 +191,7 @@ export async function getHomeEvents(pageSize: number, lastVisible: QueryDocument
       const data = doc.data();
       const event: Event = {
         id: doc.id,
-        organizationId: data.organizationId,
+        userId: data.userId,
         name: data.name,
         banner: data.banner,
         category: data.category,
@@ -221,7 +223,8 @@ export async function getHomeEvents(pageSize: number, lastVisible: QueryDocument
         },
         isApproved: data.isApproved,
         createdAt: data.createdAt,
-        updatedAt: data.updatedAt
+        updatedAt: data.updatedAt,
+        organization: data.organization
       };
       return event;
     });
@@ -269,7 +272,7 @@ export async function getCategoryEvents(category: string, pageSize: number, last
       const data = doc.data()
       const event: Event = {
         id: doc.id,
-        organizationId: data.organizationId,
+        userId: data.userId,
         name: data.name,
         banner: data.banner,
         category: data.category,
@@ -301,7 +304,8 @@ export async function getCategoryEvents(category: string, pageSize: number, last
         },
         isApproved: data.isApproved,
         createdAt: data.createdAt,
-        updatedAt: data.updatedAt
+        updatedAt: data.updatedAt,
+        organization: data.organization
       }
      return event
     });
@@ -327,7 +331,7 @@ export async function getEventById(eventId: string) {
       const data = eventDocSnap.data();
       const event: Event = {
         id: eventDocSnap.id,
-        organizationId: data.organizationId,
+        userId: data.userId,
         name: data.name,
         banner: data.banner,
         category: data.category,
@@ -359,7 +363,8 @@ export async function getEventById(eventId: string) {
         },
         isApproved: data.isApproved,
         createdAt: data.createdAt,
-        updatedAt: data.updatedAt
+        updatedAt: data.updatedAt,
+        organization: data.organization
       };
 
       console.log('Event found: ', event);
@@ -374,39 +379,39 @@ export async function getEventById(eventId: string) {
   }
 }
 
-export async function getOrganizationById(organizationId: string) {
-  try {
-    const organizationDocRef = doc(db, 'organizations', organizationId);
-    const organizationDocSnap = await getDoc(organizationDocRef);
+// export async function getOrganizationById(organizationId: string) {
+//   try {
+//     const organizationDocRef = doc(db, 'organizations', organizationId);
+//     const organizationDocSnap = await getDoc(organizationDocRef);
 
-    if (organizationDocSnap.exists()) {
-      const data = organizationDocSnap.data();
-      const organization: Organization = {
-        id: organizationDocSnap.id,
-        userId: data.userId,
-        name: data.name,
-        logo: data.logo,
-        organizationEmail: data.organizationEmail,
-        organizationPhone: data.organizationPhone,
-        website: data.website,
-        description: data.description,
-        address: data.address,
-        city: data.city,
-        zipCode: data.zipCode,
-        state: data.state,
-      };
+//     if (organizationDocSnap.exists()) {
+//       const data = organizationDocSnap.data();
+//       const organization: Organization = {
+//         id: organizationDocSnap.id,
+//         userId: data.userId,
+//         name: data.name,
+//         logo: data.logo,
+//         organizationEmail: data.organizationEmail,
+//         organizationPhone: data.organizationPhone,
+//         website: data.website,
+//         description: data.description,
+//         address: data.address,
+//         city: data.city,
+//         zipCode: data.zipCode,
+//         state: data.state,
+//       };
 
-      console.log('Organization found: ', organization);
-      return { organization, error: null };
-    } else {
-      console.log('No such document!');
-      return { organization: null, error: 'No such document' };
-    }
-  } catch (e) {
-    console.error('Error getting document: ', e);
-    return { organization: null, error: e };
-  }
-}
+//       console.log('Organization found: ', organization);
+//       return { organization, error: null };
+//     } else {
+//       console.log('No such document!');
+//       return { organization: null, error: 'No such document' };
+//     }
+//   } catch (e) {
+//     console.error('Error getting document: ', e);
+//     return { organization: null, error: e };
+//   }
+// }
 
 // export const searchEvents = async (options: SearchOptions, setEvents: (events: Event[]) => void) => {
 //   try {
@@ -551,7 +556,7 @@ export async function searchEvents(searchParams: SearchOptions, pageSize: number
       const data = doc.data() as Event;
       return {
         id: doc.id,
-        organizationId: data.organizationId,
+        userId: data.userId,
         name: data.name,
         banner: data.banner,
         category: data.category,
@@ -568,7 +573,8 @@ export async function searchEvents(searchParams: SearchOptions, pageSize: number
         links: data.links,
         isApproved: data.isApproved,
         createdAt: data.createdAt,
-        updatedAt: data.updatedAt
+        updatedAt: data.updatedAt,
+        organization: data.organization
       };
     });
 

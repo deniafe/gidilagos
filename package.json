@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^5.0.6",
+    "@clerk/nextjs": "^5.5.2",
     "@clerk/themes": "^2.1.2",
     "@craftjs/core": "^0.2.6",
     "@craftjs/layers": "^0.2.2",

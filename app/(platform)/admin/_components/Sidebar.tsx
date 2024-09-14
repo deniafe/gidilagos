@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { UserCheck, Hospital, Mail, Users, LayoutTemplate } from "lucide-react"
+import { UserCheck, Hospital, Mail, Users, LayoutTemplate, CalendarDays } from "lucide-react"
 import { useRouter, usePathname } from "next/navigation"
 
 
@@ -14,14 +14,14 @@ export const Sidebar = () => {
     const routes = [
       {
         label: "Events",
-        icon: <Users className="h-4 w-4 mr-2" />,
+        icon: <CalendarDays className="h-4 w-4 mr-2" />,
         href: `/admin`
       },
-      {
-        label: "Organizations",
-        icon: <Hospital className="h-4 w-4 mr-2" />,
-        href: `/admin/organizations`
-      },
+      // {
+      //   label: "Organizations",
+      //   icon: <Hospital className="h-4 w-4 mr-2" />,
+      //   href: `/admin/organizations`
+      // },
       {
         label: "Emails",
         icon: <Mail className="h-4 w-4 mr-2" />,

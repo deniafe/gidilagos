@@ -24,21 +24,6 @@ export interface User {
   email: string;
 }
 
-export interface Organization {
-  id?: string;
-  userId: string;
-  name: string;
-  logo: string;
-  organizationEmail: string;
-  organizationPhone: string;
-  website: string;
-  description: string
-  address: string;
-  city: string;
-  zipCode: string;
-  state: string;
-}
-
 export interface EventDate {
   startDate: Timestamp;
   endDate: Timestamp;
@@ -66,10 +51,18 @@ export interface EventLinks {
   linkedin?: string;
 }
 
+export interface EventOrganization {
+  name?: string
+  email?: string
+  phone?: string
+  description?: string
+  website?: string
+}
+
 
 export interface Event {
   id: string;
-  organizationId: string;
+  userId: string;
   name: string;
   banner: string;
   category: string;
@@ -84,6 +77,7 @@ export interface Event {
   isApproved: boolean;
   createdAt: Date;
   updatedAt: Date;
+  organization: EventOrganization
 }
 
 export interface Media {
@@ -201,4 +195,9 @@ export const FormSchema = z.object({
   linkedin: z.string().url().optional(),
   instagram: z.string().url().optional(),
   twitter: z.string().url().optional(),
+  organizationName: z.string().optional(),
+  organizationEmail: z.string().email().optional(),
+  organizationPhone: z.string().optional(),
+  organizationDescription: z.string().optional(),
+  organizationWebsite: z.string().url().optional(),
 });

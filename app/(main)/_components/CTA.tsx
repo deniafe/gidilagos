@@ -21,7 +21,7 @@ export const CTA = () => {
           </p>
 
               <Link 
-                 href="/organization"
+                 href="/create-event"
                 className="flex justify-center md:justify-start"
                 >
                 <Button>

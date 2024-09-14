@@ -5,9 +5,9 @@ import Map from '@/app/(platform)/(dashboard)/organization/(organizationId)/[org
 import { formatDate } from '@/lib/utils';
 import Image from 'next/image';
 import SimilarEvent from './SimilarEvent';
-import { Event, Organization } from '@/lib/types';
+import { Event } from '@/lib/types';
 import { toast } from "sonner";
-import { getCategoryEvents, getEventById, getOrganizationById } from "@/Firebase/queries";
+import { getCategoryEvents, getEventById } from "@/Firebase/queries";
 import { OrganizerIcon } from "@/components/icons/EventDetails";
 // import Map from './Map';
 // import { DateRange } from 'react-date-range';
@@ -21,7 +21,6 @@ export const EventDetail = ({eventId}: Props) => {
   const [event, setEvent] = useState<Event>({} as Event);
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
-  const [organization, setOrganization] = useState<Organization>({} as Organization);
 
   const router = useRouter()
 
@@ -55,24 +54,6 @@ useEffect(() => {
 
   init()
 }, [eventId])
-
-useEffect(() => {
-  const fetchOrganization = async () => {
-    if (event.organizationId) {
-      try {
-        const orgData = await getOrganizationById(event.organizationId);
-        if (orgData.organization) {
-          setOrganization(orgData.organization);
-        }
-      } catch (err) {
-        console.error(err);
-        toast('⛔ Oops!', { description: 'Could not get organizations' });
-      }
-    }
-  };
-
-  fetchOrganization();
-}, [event.organizationId]);
 
   
   return (
@@ -190,13 +171,13 @@ useEffect(() => {
           About Organizer
         </h3>
         <div className="mb-6 md:w-8/12" >
-          {organization?.description}
+          {event?.organization?.description}
         </div>
         <h6 className="mb-2 text-xs font-semibold uppercase">
           Contact Organizer
         </h6>
         <p className="mb-2" >
-          {organization?.organizationPhone}, {organization?.organizationEmail}
+          {event?.organization?.phone}, {event?.organization?.email}
         </p>
         <div className='mb-12 flex md:w-1/4' >
           <OrganizerIcon />

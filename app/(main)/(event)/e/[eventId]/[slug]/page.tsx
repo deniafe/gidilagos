@@ -2,7 +2,6 @@
 import Head from "next/head";
 import {EventDetail} from "../../../_components/EventDetail";
 import { getEventById } from "@/actions/event.actions";
-import { Event } from "@/lib/types";
 import { Metadata, ResolvingMetadata } from "next";
 import { truncateString } from "@/lib/utils";
 

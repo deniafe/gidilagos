@@ -8,6 +8,7 @@ import { Facebook } from '@/components/icons/Facebook';
 import { Twitter } from '@/components/icons/Twitter';
 import { Whatsapp } from '@/components/icons/Whatsapp';
 import { Messenger } from '@/components/icons/Messenger';
+import { toast } from 'sonner';
 
 type Props = {
   link: string;
@@ -18,7 +19,7 @@ export const ShareButton = ({ link }: Props) => {
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(link);
-    alert('Link copied to clipboard!');
+    toast('✅ Link copied to clipboard!');
   };
 
   const shareOnWhatsApp = () => {

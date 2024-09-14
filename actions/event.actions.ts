@@ -38,7 +38,7 @@ export async function getOrganizationEvents(organizationId: string, pageSize: nu
       const data = doc.data()
       const event: Event = {
         id: doc.id,
-        organizationId: data.organizationId,
+        userId: data.userId,
         name: data.name,
         banner: data.banner,
         category: data.category,
@@ -70,7 +70,8 @@ export async function getOrganizationEvents(organizationId: string, pageSize: nu
         },
         isApproved: data.isApproved,
         createdAt: data.createdAt,
-        updatedAt: data.updatedAt
+        updatedAt: data.updatedAt,
+        organization: data.organization
       }
      return event
     });
@@ -100,7 +101,7 @@ export async function getEventById(eventId: string) {
       const data = eventDocSnap.data();
       const event: Event = {
         id: eventDocSnap.id,
-        organizationId: data.organizationId,
+        userId: data.userId,
         name: data.name,
         banner: data.banner,
         category: data.category,
@@ -132,7 +133,8 @@ export async function getEventById(eventId: string) {
         },
         isApproved: data.isApproved,
         createdAt: data.createdAt,
-        updatedAt: data.updatedAt
+        updatedAt: data.updatedAt,
+        organization: data.organization
       };
 
       console.log('Event found: ', event);
