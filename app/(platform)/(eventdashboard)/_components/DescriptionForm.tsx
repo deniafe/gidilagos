@@ -33,10 +33,10 @@ import { z } from 'zod';
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Event Banner</FormLabel>
+                    <FormLabel>Event Description</FormLabel>
                     <FormControl>
                     <Textarea
-                        placeholder="Tell us a little bit about yourself"
+                        placeholder="Tell us a little about your event"
                         className="resize-none"
                         {...field}
                     />
