@@ -6,10 +6,10 @@ type Props = {
 
 const Page = async ({ params }: Props) => {
 
-  const {organizationId, eventId} = params
+  const {eventId} = params
     
   return ( 
-   <EditEvent orgId={organizationId} eventId={eventId}/>
+   <EditEvent eventId={eventId}/>
   )
 }
 
