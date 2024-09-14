@@ -84,7 +84,7 @@ export const OrganizationEventCard: React.FC<Props> = ({ event, delEvent }) => {
               </p>
             </div>
             <div className="flex justify-end">
-              <Link href={`/organization/${event?.organizationId}/e/edit//${event?.id}`}>
+              <Link href={`/e/edit//${event?.id}`}>
                 <Button size={'icon'} variant={'outline'}>
                   <Pencil className='h-[1rem] w-[1rem]' />
                 </Button>
