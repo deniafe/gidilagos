@@ -33,14 +33,21 @@ export const CTA = () => {
         </div>
         <div className="flex relative justify-center">
         <div className="hidden md:block absolute top-[2rem] left-[3rem] h-8 w-8 rounded-lg bg-cyan-400"></div>
-          <div className="hidden md:block absolute top-[4rem] left-[5rem] h-12 w-12 rounded-xl bg-primary"></div>
-          <Image
-            alt='Davido'
+          <div className="hidden md:block absolute top-[4rem] left-[4rem] h-12 w-12 rounded-xl bg-primary"></div>
+          {/* <Image
+            alt='CTA'
             width={120}
             height={120}
             className="rounded-3xl md:rounded-3xl w-[18rem] h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
-            src='/img/davido.jpg'
-          ></Image>
+            src='/img/cta.jpg'
+          ></Image> */}
+           <img
+            alt='CTA'
+            // width={120}
+            // height={120}
+            className="rounded-3xl md:rounded-3xl w-[20rem] h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
+            src='/img/cta.jpg'
+          ></img>
         </div>
         
       </div>

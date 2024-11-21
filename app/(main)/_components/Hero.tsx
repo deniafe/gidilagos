@@ -6,12 +6,22 @@ export const Hero = () => {
   return (
      <div className="flex flex-row justify-around">
       <div className="md:mt-6 hidden md:block">
-          <Image
-            alt='Davido'
+          {/* <Image
+            alt='Header_1'
             width={120}
             height={120}
-            src='/img/femi.jpg'
+            src='/img/header_1.jpg'
             className="rounded-full w-[8.5rem] h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
+            style={{
+              background: 'lightgray 50% / cover no-repeat'
+            }}
+          /> */}
+          <img
+            alt='Header_1'
+            width={120}
+            height={120}
+            src='/img/header_1.jpg'
+            className="rounded-full w-[9rem] h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
             style={{
               background: 'lightgray 50% / cover no-repeat'
             }}
@@ -37,12 +47,20 @@ export const Hero = () => {
         </div>
 
         <div className="md:mt-32 hidden md:block">
-          <Image
-            alt='Davido'
+          {/* <Image
+            alt='Header_2'
             width={120}
             height={120}
             className="rounded-full w-[8.5rem] h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
-            src='/img/davido.jpg'
+            src='/img/header_2.jpg'
+          /> */}
+
+          <img
+            alt='Header_2'
+            width={120}
+            height={120}
+            className="rounded-full w-[9rem] h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
+            src='/img/header_2.jpg'
           />
         </div>
       </div>
