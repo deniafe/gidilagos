@@ -35,7 +35,8 @@ export const EventCard: React.FC<Props> = ({ event }) => {
       </div>
       <div className="px-3 py-8">
         <h5 className="mb-2 text-lg font-bold leading-tight">
-          {truncateString(event.name, 25)}
+          {/* {truncateString(event.name, 25)} */}
+          {event.name}
         </h5>
         <p className="mb-1 text-xs font-bold text-muted-foreground">
           {event.date.from && formatDate(event.date.from)} to {event.date.to && formatDate(event.date.to)}

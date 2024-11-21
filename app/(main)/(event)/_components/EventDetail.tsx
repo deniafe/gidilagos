@@ -65,7 +65,7 @@ useEffect(() => {
           width={1000}
           alt='Event Banner'
           src={event.banner}
-          className="rounded-[2rem] lg:rounded-full w-full h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
+          className="rounded-lg w-full h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
           style={{
             background: 'lightgray 50% / cover no-repeat'
           }}
@@ -178,7 +178,7 @@ useEffect(() => {
           Contact Organizer
         </h6>
         <p className="mb-2" >
-          {event?.organization?.phone}, {event?.organization?.email}
+          {event?.organization?.phone}  {event?.organization?.phone && ','} {event?.organization?.email}
         </p>
         <div className='mb-12 flex md:w-1/4' >
           <OrganizerIcon />

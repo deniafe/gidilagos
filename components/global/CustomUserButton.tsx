@@ -3,7 +3,7 @@ import { CalendarDays, UserCheck } from 'lucide-react'
 import { dark } from '@clerk/themes'
 import { useTheme } from "next-themes"
 
-export const CustomUserDropdown = () => {
+export const  CustomUserDropdown = () => {
     const { theme } = useTheme();
     const { user } = useUser();
   
