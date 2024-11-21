@@ -17,10 +17,10 @@ export const Hero = () => {
             }}
           /> */}
           <img
-            alt='Header_1'
+            alt='Header_2'
             width={120}
             height={120}
-            src='/img/header_1.jpg'
+            src='/img/header_2.jpg'
             className="rounded-full w-[9rem] h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
             style={{
               background: 'lightgray 50% / cover no-repeat'
@@ -56,11 +56,11 @@ export const Hero = () => {
           /> */}
 
           <img
-            alt='Header_2'
+            alt='Header_1'
             width={120}
             height={120}
             className="rounded-full w-[9rem] h-[20rem] object-cover bg-center bg-cover bg-lightgray-500"
-            src='/img/header_2.jpg'
+            src='/img/header_1.jpg'
           />
         </div>
       </div>
