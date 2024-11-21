@@ -8,9 +8,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Event } from '@/lib/types';
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -40,7 +40,7 @@ export function ApproveButton({ event }: Props) {
 
         } catch (error) {
             setLoading(false);
-            toast('⛔ Oppse!', { description: 'could not update the event' });
+            toast('⛔ Oppse!', { description: 'Could not update the event' });
             setIsOpen(false);
         }
     };
@@ -72,35 +72,32 @@ export function ApproveButton({ event }: Props) {
                             Select an option to approve or disapprove the event.
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="py-4 flex flex-col space-y-4">
-                        <div className="flex items-center space-x-2">
-                            <input
-                                type="radio"
-                                id="approve"
-                                name="approval"
-                                value="approved"
-                                checked={checked}
-                                onChange={() => setChecked(true)}
-                                className="peer"
-                            />
-                            <Label htmlFor="approve" className="cursor-pointer">
-                                Approved
-                            </Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <input
-                                type="radio"
-                                id="disapprove"
-                                name="approval"
-                                value="disapproved"
-                                checked={!checked}
-                                onChange={() => setChecked(false)}
-                                className="peer"
-                            />
-                            <Label htmlFor="disapprove" className="cursor-pointer">
-                                Disapproved
-                            </Label>
-                        </div>
+                    <div className="py-4">
+                        <RadioGroup
+                            value={checked ? "approved" : "disapproved"}
+                            onValueChange={(value) => setChecked(value === "approved")}
+                        >
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem
+                                    value="approved"
+                                    id="approved"
+                                    className="peer"
+                                />
+                                <Label htmlFor="approved" className="cursor-pointer">
+                                    Approved
+                                </Label>
+                            </div>
+                            <div className="flex items-center space-x-2 mt-2">
+                                <RadioGroupItem
+                                    value="disapproved"
+                                    id="disapproved"
+                                    className="peer"
+                                />
+                                <Label htmlFor="disapproved" className="cursor-pointer">
+                                    Disapproved
+                                </Label>
+                            </div>
+                        </RadioGroup>
                     </div>
                     <DialogFooter>
                         <Button onClick={handleSubmit} disabled={loading}>
