@@ -55,6 +55,7 @@ export const SendTestEmail = ({ setRecipients, exportData }: Props) => {
         }
 
         if(res.error) {
+          console.log('Error sending emails', res.error)
           toast('⛔ Oppse!', {description: 'There was an error sending test emails'})
         }
         

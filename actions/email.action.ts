@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export interface SendEmailParams {
+export interface SendEmailParams { 
     to: string[];
     from: string;
     subject: string;
