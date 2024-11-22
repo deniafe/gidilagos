@@ -12,52 +12,44 @@ export const Footer = () => {
 
   return (
     <footer className="bg-primary-foreground text-center text-white lg:text-left">
-      <div className="mx-[6rem] py-10 text-center md:text-left">
-        <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <h6 className="mb-8 flex justify-center font-semibold uppercase md:justify-start">
-              Company
-            </h6>
+      <div className="mx-4 md:mx-[6rem] py-10">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="flex flex-col items-center md:items-start">
+            <h6 className="mb-8 font-semibold uppercase">Company</h6>
             {company.map((link, index) => (
               <p key={index} className="mb-6">
                 <a href={link.url}>{link.title}</a>
               </p>
             ))}
           </div>
-          <div>
-            <h6 className="mb-8 flex justify-center font-semibold uppercase md:justify-start">
-              Resources
-            </h6>
+          <div className="flex flex-col items-center md:items-start">
+            <h6 className="mb-8 font-semibold uppercase">Resources</h6>
             {resources.map((link, index) => (
               <p key={index} className="mb-6">
                 <Link href={link.url}>{link.title}</Link>
               </p>
             ))}
           </div>
-          <div>
-            <h6 className="mb-8 flex justify-center font-semibold uppercase md:justify-start">
-              Connect With Us
-            </h6>
-            <div className="flex justify-center md:justify-start">
-              <a href="#!" className="mr-4 p-1 bg-white rounded-full">
+          <div className="flex flex-col items-center md:items-start">
+            <h6 className="mb-8 font-semibold uppercase">Connect With Us</h6>
+            <div className="flex space-x-4">
+              <a href="#!" className="p-1 bg-white rounded-full">
                 <Twitter />
               </a>
-              <a href="#!" className="mr-4 p-1 bg-white rounded-full">
+              <a href="#!" className="p-1 bg-white rounded-full">
                 <Instagram />
               </a>
-              <a href="#!" className="mr-4 p-1 bg-white rounded-full">
+              <a href="#!" className="p-1 bg-white rounded-full">
                 <LinkedIn />
               </a>
-              <a href="#!" className="mr-4 p-1 bg-white rounded-full">
+              <a href="#!" className="p-1 bg-white rounded-full">
                 <Facebook />
               </a>
             </div>
           </div>
-          <div>
-            <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
-              Contact
-            </h6>
-            <p className="mb-4 flex items-center justify-center md:justify-start">
+          <div className="flex flex-col items-center md:items-start">
+            <h6 className="mb-4 font-semibold uppercase">Contact</h6>
+            <p className="mb-4 flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -69,7 +61,7 @@ export const Footer = () => {
               </svg>
               Lagos Nigeria
             </p>
-            <p className="mb-4 flex items-center justify-center md:justify-start">
+            <p className="mb-4 flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -88,7 +80,7 @@ export const Footer = () => {
         <Logo />
       </div>
       <div className="py-2 text-center">
-        <span>© {currentYear} Copyright </span>
+        <span>© {currentYear} Copyright</span>
       </div>
     </footer>
   );
