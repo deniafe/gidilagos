@@ -60,7 +60,7 @@ export const Navbar = () => {
         ) : (
           <Button className="hidden md:inline-block" size="sm" variant="outline" asChild>
             <Link href="/sign-in">
-              Login
+              Sign In
             </Link>
           </Button>
         )}
