@@ -35,8 +35,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Redirect all visitors to sign-in page
-  redirect("/sign-in"); 
 
   return (
     <ClerkProvider>
