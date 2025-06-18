@@ -129,11 +129,11 @@ export const EmailEditorProvider = ({
 
     // Use a switch statement to create a type-safe element object
     switch (item.type) {
-      case "text": concreteNewElement = { ...baseProperties, type: "text", ...(defaultElementData as Omit<TextEmailElement, 'id' | 'name'>) }; break;
-      case "image": concreteNewElement = { ...baseProperties, type: "image", ...(defaultElementData as Omit<ImageEmailElement, 'id' | 'name'>) }; break;
-      case "button": concreteNewElement = { ...baseProperties, type: "button", ...(defaultElementData as Omit<ButtonEmailElement, 'id' | 'name'>) }; break;
-      case "divider": concreteNewElement = { ...baseProperties, type: "divider", ...(defaultElementData as Omit<DividerEmailElement, 'id' | 'name'>) }; break;
-      case "spacer": concreteNewElement = { ...baseProperties, type: "spacer", ...(defaultElementData as Omit<SpacerEmailElement, 'id' | 'name'>) }; break;
+      case "text": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<TextEmailElement, 'id' | 'name'>) }; break;
+      case "image": concreteNewElement = { ...baseProperties,  ...(defaultElementData as Omit<ImageEmailElement, 'id' | 'name'>) }; break;
+      case "button": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<ButtonEmailElement, 'id' | 'name'>) }; break;
+      case "divider": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<DividerEmailElement, 'id' | 'name'>) }; break;
+      case "spacer": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<SpacerEmailElement, 'id' | 'name'>) }; break;
       case "social":
         const socialDefault = defaultElementData as Omit<SocialEmailElement, "id" | "name">;
         concreteNewElement = { ...baseProperties, type: "social", props: { ...socialDefault.props, links: socialDefault.props.links.map(link => ({...link, id: uuidv4()})) }, style: socialDefault.style };
@@ -290,7 +290,6 @@ export const EmailEditorProvider = ({
     <EmailEditorContext.Provider
       value={{
         design,
-        setDesign,
         selectedElement,
         setSelectedElement,
         addElement,

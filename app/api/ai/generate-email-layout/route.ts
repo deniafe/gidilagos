@@ -47,8 +47,8 @@ async function replaceImagePlaceholders(elements: AnyEmailElement[], userPrompt:
       if (realImageUrl) {
         el.props.src = realImageUrl;
       }
-    } else if (el.type === 'columns' && el.columns) { // Check if el.columns exists
-      for (const col of el.columns) {
+    } else if (el.type === 'columns' && (el as any).columns) { // Check if el.columns exists
+      for (const col of ( el as any).columns) {
         col.elements = await replaceImagePlaceholders(col.elements, userPrompt);
       }
     }
