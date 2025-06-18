@@ -77,6 +77,7 @@ interface DropIndicator {
 
 interface EmailEditorContextType {
   design: EmailDesign;
+  setDesign: (design: any) => void; // Add this line
   selectedElement: AnyEmailElement | null | { type: 'global'; id: 'global_style' };
   dropIndicator: DropIndicator | null;
   addElement: (item: DraggableItem, parentId: string | null, targetElementId?: string | null, position?: "before" | "after") => void;
@@ -290,6 +291,7 @@ export const EmailEditorProvider = ({
     <EmailEditorContext.Provider
       value={{
         design,
+        setDesign,
         selectedElement,
         setSelectedElement,
         addElement,
