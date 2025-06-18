@@ -164,7 +164,7 @@ function LockoutScreen() {
         {/* Optional progress bar */}
         <div className="mt-12 w-full max-w-md mx-auto">
           <div className="h-2 bg-[hsl(179,7.6%,96.8%)]/20 rounded-full overflow-hidden">
-            <div className="h-full bg-[hsl(179,76%,36%)] rounded-full animate-pulse" style={{ width: '60%', transition: 'width 2s ease-in-out' }}></div>
+            <div className="h-full bg-[hsl(179,76%,36%)] rounded-full animate-pulse" style={{ width: '10%', transition: 'width 2s ease-in-out' }}></div>
           </div>
           <p className="text-[hsl(179,7.6%,96.8%)]/70 text-sm mt-2">Connecting neural networks and preparing workspace...</p>
         </div>
