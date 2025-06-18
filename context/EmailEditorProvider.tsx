@@ -117,66 +117,171 @@ export const EmailEditorProvider = ({
   const [selectedElement, setSelectedElement] = useState<AnyEmailElement | null | { type: 'global'; id: 'global_style' }>(null);
   const [dropIndicator, setDropIndicator] = useState<DropIndicator | null>(null);
 
-  const addElement = useCallback((
-    item: DraggableItem, parentId: string | null, targetElementId?: string | null, position: "before" | "after" = "after"
-  ) => {
-    const newElementId = uuidv4();
-    const defaultElementData = item.defaultElement();
-    let concreteNewElement: AnyEmailElement;
-    const baseProperties = {
-      id: newElementId,
-      name: `${item.label} ${uuidv4().substring(0, 4)}`,
-    };
+  // const addElement = useCallback((
+  //   item: DraggableItem, parentId: string | null, targetElementId?: string | null, position: "before" | "after" = "after"
+  // ) => {
+  //   const newElementId = uuidv4();
+  //   const defaultElementData = item.defaultElement();
+  //   let concreteNewElement: AnyEmailElement;
+  //   const baseProperties = {
+  //     id: newElementId,
+  //     name: `${item.label} ${uuidv4().substring(0, 4)}`,
+  //   };
 
-    // Use a switch statement to create a type-safe element object
-    switch (item.type) {
-      case "text": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<TextEmailElement, 'id' | 'name'>) }; break;
-      case "image": concreteNewElement = { ...baseProperties,  ...(defaultElementData as Omit<ImageEmailElement, 'id' | 'name'>) }; break;
-      case "button": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<ButtonEmailElement, 'id' | 'name'>) }; break;
-      case "divider": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<DividerEmailElement, 'id' | 'name'>) }; break;
-      case "spacer": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<SpacerEmailElement, 'id' | 'name'>) }; break;
-      case "social":
-        const socialDefault = defaultElementData as Omit<SocialEmailElement, "id" | "name">;
-        concreteNewElement = { ...baseProperties, type: "social", props: { ...socialDefault.props, links: socialDefault.props.links.map(link => ({...link, id: uuidv4()})) }, style: socialDefault.style };
-        break;
-      case "columns":
-        const columnsDefault = defaultElementData as Omit<ColumnsEmailElement, "id" | "name">;
-        concreteNewElement = { ...baseProperties, type: "columns", props: columnsDefault.props, style: columnsDefault.style, columns: columnsDefault.columns.map(col => ({ ...col, id: uuidv4(), elements: [] })) };
-        break;
-      default: console.error("Unknown element type"); return;
+  //   // Use a switch statement to create a type-safe element object
+  //   switch (item.type) {
+  //     case "text": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<TextEmailElement, 'id' | 'name'>) }; break;
+  //     case "image": concreteNewElement = { ...baseProperties,  ...(defaultElementData as Omit<ImageEmailElement, 'id' | 'name'>) }; break;
+  //     case "button": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<ButtonEmailElement, 'id' | 'name'>) }; break;
+  //     case "divider": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<DividerEmailElement, 'id' | 'name'>) }; break;
+  //     case "spacer": concreteNewElement = { ...baseProperties, ...(defaultElementData as Omit<SpacerEmailElement, 'id' | 'name'>) }; break;
+  //     case "social":
+  //       const socialDefault = defaultElementData as Omit<SocialEmailElement, "id" | "name">;
+  //       concreteNewElement = { ...baseProperties, type: "social", props: { ...socialDefault.props, links: socialDefault.props.links.map(link => ({...link, id: uuidv4()})) }, style: socialDefault.style };
+  //       break;
+  //     case "columns":
+  //       const columnsDefault = defaultElementData as Omit<ColumnsEmailElement, "id" | "name">;
+  //       concreteNewElement = { ...baseProperties, type: "columns", props: columnsDefault.props, style: columnsDefault.style, columns: columnsDefault.columns.map(col => ({ ...col, id: uuidv4(), elements: [] })) };
+  //       break;
+  //     default: console.error("Unknown element type"); return;
+  //   }
+
+  //   setDesign((prevDesign) => {
+  //     let wasAdded = false;
+  //     let newRootElements = [...prevDesign.elements];
+
+  //     if (parentId) {
+  //       newRootElements = prevDesign.elements.map(el => {
+  //         if (el.type === 'columns') {
+  //           const columnsEl = el as ColumnsEmailElement;
+  //           let columnFound = false;
+  //           const updatedColumns = columnsEl.columns.map(col => {
+  //             if (col.id === parentId) {
+  //               wasAdded = true;
+  //               columnFound = true;
+  //               return { ...col, elements: insertElementIntoArray(col.elements, concreteNewElement, targetElementId, position) };
+  //             }
+  //             return col;
+  //           });
+  //           if (columnFound) return { ...columnsEl, columns: updatedColumns };
+  //         }
+  //         return el;
+  //       });
+  //     }
+
+  //     if (!wasAdded) {
+  //       newRootElements = insertElementIntoArray(prevDesign.elements, concreteNewElement, targetElementId, position);
+  //     }
+      
+  //     return { ...prevDesign, elements: newRootElements };
+  //   });
+  //   setSelectedElement(concreteNewElement);
+  // }, []);
+
+
+  // Fixed addElement function with proper type assertions
+const addElement = useCallback((
+  item: DraggableItem, parentId: string | null, targetElementId?: string | null, position: "before" | "after" = "after"
+) => {
+  const newElementId = uuidv4();
+  const defaultElementData = item.defaultElement();
+  let concreteNewElement: AnyEmailElement;
+  const baseProperties = {
+    id: newElementId,
+    name: `${item.label} ${uuidv4().substring(0, 4)}`,
+  };
+
+  // Use a switch statement to create a type-safe element object
+  switch (item.type) {
+    case "text": 
+      concreteNewElement = { 
+        ...baseProperties, 
+        ...(defaultElementData as Omit<TextEmailElement, 'id' | 'name'>) 
+      } as TextEmailElement;
+      break;
+    case "image": 
+      concreteNewElement = { 
+        ...baseProperties,  
+        ...(defaultElementData as Omit<ImageEmailElement, 'id' | 'name'>) 
+      } as ImageEmailElement;
+      break;
+    case "button": 
+      concreteNewElement = { 
+        ...baseProperties, 
+        ...(defaultElementData as Omit<ButtonEmailElement, 'id' | 'name'>) 
+      } as ButtonEmailElement;
+      break;
+    case "divider": 
+      concreteNewElement = { 
+        ...baseProperties, 
+        ...(defaultElementData as Omit<DividerEmailElement, 'id' | 'name'>) 
+      } as DividerEmailElement;
+      break;
+    case "spacer": 
+      concreteNewElement = { 
+        ...baseProperties, 
+        ...(defaultElementData as Omit<SpacerEmailElement, 'id' | 'name'>) 
+      } as SpacerEmailElement;
+      break;
+    case "social":
+      const socialDefault = defaultElementData as Omit<SocialEmailElement, "id" | "name">;
+      concreteNewElement = { 
+        ...baseProperties, 
+        type: "social", 
+        props: { 
+          ...socialDefault.props, 
+          links: socialDefault.props.links.map(link => ({...link, id: uuidv4()})) 
+        }, 
+        style: socialDefault.style 
+      } as SocialEmailElement;
+      break;
+    case "columns":
+      const columnsDefault = defaultElementData as Omit<ColumnsEmailElement, "id" | "name">;
+      concreteNewElement = { 
+        ...baseProperties, 
+        type: "columns", 
+        props: columnsDefault.props, 
+        style: columnsDefault.style, 
+        columns: columnsDefault.columns.map(col => ({ ...col, id: uuidv4(), elements: [] })) 
+      } as ColumnsEmailElement;
+      break;
+    default: 
+      console.error("Unknown element type"); 
+      return;
+  }
+
+  setDesign((prevDesign) => {
+    let wasAdded = false;
+    let newRootElements = [...prevDesign.elements];
+
+    if (parentId) {
+      newRootElements = prevDesign.elements.map(el => {
+        if (el.type === 'columns') {
+          const columnsEl = el as ColumnsEmailElement;
+          let columnFound = false;
+          const updatedColumns = columnsEl.columns.map(col => {
+            if (col.id === parentId) {
+              wasAdded = true;
+              columnFound = true;
+              return { ...col, elements: insertElementIntoArray(col.elements, concreteNewElement, targetElementId, position) };
+            }
+            return col;
+          });
+          if (columnFound) return { ...columnsEl, columns: updatedColumns };
+        }
+        return el;
+      });
     }
 
-    setDesign((prevDesign) => {
-      let wasAdded = false;
-      let newRootElements = [...prevDesign.elements];
+    if (!wasAdded) {
+      newRootElements = insertElementIntoArray(prevDesign.elements, concreteNewElement, targetElementId, position);
+    }
+    
+    return { ...prevDesign, elements: newRootElements };
+  });
+  setSelectedElement(concreteNewElement);
+}, []);
 
-      if (parentId) {
-        newRootElements = prevDesign.elements.map(el => {
-          if (el.type === 'columns') {
-            const columnsEl = el as ColumnsEmailElement;
-            let columnFound = false;
-            const updatedColumns = columnsEl.columns.map(col => {
-              if (col.id === parentId) {
-                wasAdded = true;
-                columnFound = true;
-                return { ...col, elements: insertElementIntoArray(col.elements, concreteNewElement, targetElementId, position) };
-              }
-              return col;
-            });
-            if (columnFound) return { ...columnsEl, columns: updatedColumns };
-          }
-          return el;
-        });
-      }
-
-      if (!wasAdded) {
-        newRootElements = insertElementIntoArray(prevDesign.elements, concreteNewElement, targetElementId, position);
-      }
-      
-      return { ...prevDesign, elements: newRootElements };
-    });
-    setSelectedElement(concreteNewElement);
-  }, []);
 
   const moveElement = useCallback((
     draggedElementId: string,

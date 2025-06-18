@@ -98,6 +98,7 @@ export interface ButtonElementProps {
 export type ButtonEmailElement = EmailElement<ButtonElementStyle, ButtonElementProps>;
 
 export interface DividerElementProps {}
+export interface SpacerElementProps {}
 export type DividerEmailElement = EmailElement<DividerElementStyle, DividerElementProps>;
 
 export type SpacerEmailElement = EmailElement<SpacerElementStyle, SpacerElementProps>;

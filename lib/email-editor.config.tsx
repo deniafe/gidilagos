@@ -42,7 +42,7 @@ export const availableEditorElements: DraggableItem[] = [
       props: { layoutType: "2_col_equal" },
       style: { paddingTop: "5px", paddingBottom: "5px" },
       columns: [
-        { id: uuidv4(), widthFactor: 0.5, elements: [], style: { padding: "5px"} },
+        { id: uuidv4(), widthFactor: 0.5, elements: [] },
         { id: uuidv4(), widthFactor: 0.5, elements: [], style: { padding: "5px"} }
       ]
     }) as Omit<ColumnsEmailElement, "id" | "name">
