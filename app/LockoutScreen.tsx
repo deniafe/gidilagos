@@ -3,23 +3,23 @@ import { useState, useEffect } from "react";
 // Temporary lockout component
 
 const LockoutScreen = () => {
-  const [progress, setProgress] = useState(20);
+  const [progress, setProgress] = useState(30);
 
   // Function to update progress by 1% every 2 hours
-  const updateProgress = () => {
-    setProgress(prev => {
-      const newProgress = Math.min(prev + 1, 100);
-      return newProgress;
-    });
-  };
+  // const updateProgress = () => {
+  //   setProgress(prev => {
+  //     const newProgress = Math.min(prev + 1, 100);
+  //     return newProgress;
+  //   });
+  // };
 
-  useEffect(() => {
-    // Set up interval for 2 hours (2 * 60 * 60 * 1000 milliseconds)
-    const interval = setInterval(updateProgress, 2 * 60 * 60 * 1000);
+  // useEffect(() => {
+  //   // Set up interval for 2 hours (2 * 60 * 60 * 1000 milliseconds)
+  //   const interval = setInterval(updateProgress, 2 * 60 * 60 * 1000);
 
-    // Cleanup interval on component unmount
-    return () => clearInterval(interval);
-  }, []);
+  //   // Cleanup interval on component unmount
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // Get progress message based on current progress
   const getProgressMessage = (progress: number) => {
