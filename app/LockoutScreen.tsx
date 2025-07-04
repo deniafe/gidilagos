@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 // Temporary lockout component
 
 const LockoutScreen = () => {
-  const [progress, setProgress] = useState(80);
+  const [progress, setProgress] = useState(90);
 
   // Function to update progress by 1% every 2 hours
   // const updateProgress = () => {
